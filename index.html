@@ -1,0 +1,40 @@
+<html ng-app="markdown" ng-controller="mdCtrl">
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
+
+    <script>
+      var app = angular.module("markdown", []);
+      app.controller("mdCtrl", function($scope, $http, $sce) {
+        $scope.submitText = function(angry) {
+
+          
+          $http.get('/marked/' + encodeURIComponent(angry))
+            .success(function(data, status, headers, config) {
+              console.log(data)
+              $scope.myContent = $sce.trustAsHtml(data)
+            })
+            .error(function(data, status, headers, config) {
+              console.log("no")
+            });
+
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div>
+      <h1>Welcome to Ghost</h1>
+      <br>
+    </div>
+    <div>
+      <div>
+        <textarea rows="10" col="50" placeholder="type stuff here" id="textbox"
+        ng-model="angry"
+        ng-keyup="submitText(angry)"></textarea>
+      </div>
+    </div>
+      <div ng-bind-html='myContent'>
+      </div>
+    </div>
+</body>
+</html>
